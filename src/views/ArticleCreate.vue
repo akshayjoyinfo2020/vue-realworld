@@ -9,6 +9,7 @@
                 <input
                   type="text"
                   class="form-control form-control-lg"
+                  v-model="title"
                   placeholder="Article Title"
                 />
               </fieldset>
@@ -16,6 +17,7 @@
                 <input
                   type="text"
                   class="form-control"
+                  v-model="description"
                   placeholder="What's this article about?"
                 />
               </fieldset>
@@ -23,23 +25,15 @@
                 <textarea
                   class="form-control"
                   rows="8"
+                  v-model="body"
                   placeholder="Write your article (in markdown)"
                 ></textarea>
               </fieldset>
               <fieldset class="form-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter tags"
-                />
+                <input type="text" v-model="tags" class="form-control" placeholder="Enter tags" />
                 <div class="tag-list"></div>
               </fieldset>
-              <button
-                class="btn btn-lg pull-xs-right btn-primary"
-                type="button"
-              >
-                Publish Article
-              </button>
+              <button @click="publish" class="btn btn-lg pull-xs-right btn-primary" type="button">Publish Article</button>
             </fieldset>
           </form>
         </div>
@@ -47,3 +41,35 @@
     </div>
   </div>
 </template>
+
+
+<script>
+export default {
+  data: function() {
+    return {
+      title: "",
+      description: "",
+      body: "",
+      tags: "",
+      errors: []
+    };
+  },
+  methods: {
+    publish() {
+      console.log("publishing");
+      this.$store
+        .dispatch("articles/createArticle", {
+          title: this.title,
+          description: this.description,
+          body: this.body,
+          tags: this.tags
+        })
+        .catch(err => {
+          this.errors = [];
+          this.errors.push(err);
+          console.log(this.errors);
+        });
+    }
+  }
+};
+</script>

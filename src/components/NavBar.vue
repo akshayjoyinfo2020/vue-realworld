@@ -9,9 +9,9 @@
           </router-link>
         </li>
         <li v-if="username" class="nav-item">
-          <a class="nav-link" href="">
+          <router-link class="nav-link" to="/editor">
             <i class="ion-compose"></i>&nbsp;New Post
-          </a>
+          </router-link>
         </li>
         <li v-if="username" class="nav-item">
           <router-link class="nav-link" to="/settings">

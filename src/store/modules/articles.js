@@ -4,13 +4,18 @@ export default {
   namespaced: true,
   state: {
     feed: [],
-    count: 0
+    count: 0,
+    created: null
   },
   mutations: {
     setArticles(state, { articles, articlesCount }) {
       console.log("Called Mutation");
       state.feed = articles;
       state.count = articlesCount;
+    },
+    setNewlyCreated(state, {newArticle}){
+        console.log("Called Mutation setNewlyCreated");
+        state.created = newArticle;
     }
   },
   actions: {
@@ -41,6 +46,22 @@ export default {
       }
       const response = await api.get(route);
       commit("setArticles", response.data);
+    },
+    async createArticle( { commit }, payload )
+    {
+        console.log("Create Artivle Store");
+        console.log(payload);
+        let route = "/articles";
+        const articleBody = {
+            article : {
+                title: payload.title,
+                description: payload.description,
+                body: payload.body,
+                tagList: payload.tags? payload.tags.split(' '): []
+            }
+        }
+        const response = await api.post(route, articleBody);
+        commit("setNewlyCreated", response.data);
     }
   }
 };
